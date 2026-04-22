@@ -777,24 +777,24 @@ export default function BankerPage() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 min-h-screen">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-12 pb-24">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight break-words">
-                        Banker Dashboard
+                    <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-none uppercase italic">
+                        BANKER <span className="text-emerald-400">HUB</span>
                     </h1>
-                    <div className="flex flex-wrap items-center gap-3 mt-4">
-                        <p className="text-zinc-400 text-lg md:text-xl max-w-2xl">
-                            The definitive Casino-as-a-Service management interface.
+                    <div className="flex flex-wrap items-center gap-2 mt-3">
+                        <p className="text-zinc-500 text-xs md:text-xl font-bold uppercase tracking-widest opacity-60">
+                            Casino-as-a-Service Management
                         </p>
                         {isVipTier1 && (
-                            <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-black uppercase tracking-tighter flex items-center space-x-1.5 animate-pulse whitespace-nowrap">
-                                <ShieldCheck className="w-3 h-3" /> VIP TIER 1
+                            <div className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-tighter flex items-center space-x-1 shadow-lg shadow-emerald-500/5">
+                                <ShieldCheck className="w-2.5 h-2.5" /> <span>VIP 1</span>
                             </div>
                         )}
                         {isVipTier2 && (
-                            <div className="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] sm:text-xs font-black uppercase tracking-tighter flex items-center space-x-1.5 shadow-[0_0_15px_rgba(168,85,247,0.2)] whitespace-nowrap">
-                                <Zap className="w-3 h-3 fill-purple-400" /> RAINMAKER VIP TIER 2
+                            <div className="px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[8px] font-black uppercase tracking-tighter flex items-center space-x-1 shadow-lg shadow-purple-500/5">
+                                <Zap className="w-2.5 h-2.5 fill-purple-400" /> <span>VIP 2</span>
                             </div>
                         )}
                     </div>
@@ -924,37 +924,42 @@ export default function BankerPage() {
                         return null;
                     })()}
 
-                    {/* Stats Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 space-y-6 md:space-y-0 md:space-x-6">
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
                         <StatCard
-                            title={`Vault TVL (${nativeSymbol})`}
+                            title="Vault TVL"
                             value={`${tvlDisplay} ${nativeSymbol}`}
                             trend="up"
-                            description="Total liquidity backing your pool."
+                            icon={Wallet}
+                            description="Active Bankroll"
                         />
                         <StatCard
-                            title={`Net Profit (${nativeSymbol})`}
+                            title="Net Profit"
                             value={`${profitDisplay} ${nativeSymbol}`}
                             trend={netProfit >= 0 ? "up" : "down"}
-                            description="Cumulative algorithmic advantage."
+                            icon={TrendingUp}
+                            description="House Edge GGR"
                         />
                         <StatCard
-                            title={`Rebates Earned (${nativeSymbol})`}
+                            title="Volume Rebates"
                             value={`${rebatesDisplay} ${nativeSymbol}`}
                             trend="up"
-                            description="Platform yield generated from volume."
+                            icon={Zap}
+                            description="Platform Yield"
+                            className="col-span-2 md:col-span-1"
                         />
                     </div>
 
-                    <Card className="bg-zinc-900/40 backdrop-blur border-zinc-800/80 mb-8 mt-8">
-                        <CardHeader>
-                            <CardTitle className="flex flex-col space-y-1">
-                                <span className="flex items-center space-x-2 text-sm text-zinc-400 font-normal"><TrendingUp className="w-4 h-4 text-emerald-400" /> Historical Performance</span>
-                                <span className="text-3xl font-black text-white mt-1">{profitDisplay} {nativeSymbol}</span>
+                    <Card className="bg-zinc-900/20 backdrop-blur border-zinc-800/50 mb-8 mt-4 overflow-hidden">
+                        <CardHeader className="p-4 sm:p-6 pb-0">
+                            <CardTitle className="flex flex-col">
+                                <span className="flex items-center space-x-2 text-[10px] text-zinc-500 font-black uppercase tracking-widest leading-none">
+                                    <TrendingUp className="w-3 h-3 text-emerald-400" /> Historical Performance
+                                </span>
+                                <span className="text-2xl font-black text-white mt-1 italic tracking-tighter">{profitDisplay} {nativeSymbol}</span>
                             </CardTitle>
-                            <CardDescription>7-Day cumulative Gross Gaming Revenue (GGR). Synced via BSC RPC Multicall.</CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-2 sm:p-6">
                             <div className="h-[300px] w-full mt-4">
                                 <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                                     <LineChart data={chartData}>

@@ -69,15 +69,16 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
     };
 
     return (
-        <div className="fixed inset-0 z-[1200] flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <div 
-                className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity"
-                onClick={onClose}
-            />
-            
-            {/* Modal Content */}
-            <div className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            {/* Modal Content - Premium Drawer Feel */}
+            <motion.div
+                initial={{ opacity: 0, y: "100%" }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[95vh] mt-auto sm:mt-0"
+            >
+                {/* Pull Handle for Mobile */}
+                <div className="w-12 h-1 bg-zinc-800 rounded-full mx-auto mt-3 mb-1 sm:hidden opacity-50" />
                 {/* Progress Bar (Tutorial) */}
                 {activeTab === 'acquire' && view === 'tutorial' && (
                     <div className="absolute top-0 left-0 w-full h-1 bg-zinc-900 overflow-hidden">
@@ -88,19 +89,22 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
                     </div>
                 )}
 
-                {/* Header */}
-                <div className="p-6 border-b border-zinc-900 bg-zinc-900/30 flex items-center justify-between">
+                {/* Header - Premium Banner Style */}
+                <div className="p-6 border-b border-white/5 bg-gradient-to-br from-emerald-500/10 via-zinc-950 to-amber-500/10 flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                        <div className="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
                             <ArrowDownCircle className="w-5 h-5 text-emerald-400" />
                         </div>
-                        <h3 className="text-xl font-black text-white italic tracking-tighter uppercase">CASHIER</h3>
+                        <div>
+                            <h3 className="text-lg font-black text-white italic tracking-tighter uppercase leading-none">CASHIER</h3>
+                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">Institutional Funding Terminal</p>
+                        </div>
                     </div>
                     <button 
                         onClick={onClose}
-                        className="p-2 hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-white transition-all"
+                        className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-zinc-400 transition-all border border-white/10"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -327,7 +331,7 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
                         </button>
                     )}
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }

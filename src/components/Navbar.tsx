@@ -76,7 +76,7 @@ export function Navbar() {
 
     return (
         <>
-            <nav className="w-full border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-[1000]">
+            <nav className="hidden md:block w-full border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-[1000]">
                 <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/" className="flex items-center shrink-0 mr-8 group" onClick={closeMenu}>
@@ -101,7 +101,7 @@ export function Navbar() {
                                 Play
                             </Link>
                             <Link href="/bonding" className="text-emerald-400 hover:text-emerald-300 transition-colors font-bold flex items-center space-x-1">
-                                <Flame className="w-4 h-4" /> Presale
+                                <Flame className="w-4 h-4" /> FairLaunch
                             </Link>
                             <Link href="/banker" className="text-zinc-400 hover:text-white transition-colors font-medium">
                                 Be the House
@@ -287,7 +287,7 @@ export function Navbar() {
                             Play Room Lobby
                         </Link>
                         <Link href="/bonding" onClick={closeMenu} className="px-3 py-4 text-emerald-400 font-bold text-lg border-b border-zinc-800/50 hover:bg-zinc-900/50 rounded-md transition-colors flex items-center space-x-2">
-                            <Flame className="w-5 h-5" /> <span>$DOPA Presale</span>
+                            <Flame className="w-5 h-5" /> <span>$DOPA FairLaunch</span>
                         </Link>
                         <Link href="/banker" onClick={closeMenu} className="px-3 py-4 text-zinc-300 font-medium text-lg border-b border-zinc-800/50 hover:text-emerald-400 hover:bg-zinc-900/50 rounded-md transition-colors">
                             Be the House (Banker)

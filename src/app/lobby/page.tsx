@@ -166,14 +166,13 @@ export default function LobbyPage() {
     }, [allHousesMetadata, bankerVipData, houseAddresses, houseCount, totalHouses]);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="mb-12 text-center">
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4 uppercase break-words">
-                    Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Battleground</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-12 pb-12">
+            <div className="mb-8 md:mb-12 text-center">
+                <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-2 uppercase break-words leading-none">
+                    GAME <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">LOBBY</span>
                 </h1>
-                <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-                    Global verified liquidity pools ranked by TVL.
-                    Bankers provide the capital, you bring the bets.
+                <p className="text-sm md:text-xl text-zinc-500 max-w-2xl mx-auto font-bold uppercase tracking-widest opacity-60">
+                    Provably Fair Liquidity Pools
                 </p>
             </div>
 

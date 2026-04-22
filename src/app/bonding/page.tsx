@@ -180,25 +180,20 @@ export default function BondingPage() {
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/10 blur-[100px] rounded-full -z-10" />
             <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full -z-10" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 space-y-12 lg:space-y-0 lg:space-x-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 space-y-8 lg:space-y-0 lg:space-x-12 items-start">
                 {/* Left Side: Info & Progress */}
-                <div className="space-y-8">
+                <div className="space-y-6">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="space-y-4"
+                        className="space-y-3"
                     >
-                        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider">
                             <Flame className="w-3 h-3" /> Initial Fair Launch
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
-                            The $DOPA <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Bonding Curve</span>
+                        <h1 className="text-3xl md:text-6xl font-black text-white leading-none tracking-tighter uppercase italic">
+                            $DOPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Launchpad</span>
                         </h1>
-                        <p className="text-zinc-400 text-lg max-w-lg">
-                            Fair launch mechanics. No venture capital. No pre-sale.
-                            100% of the initial supply is sold through this mathematical curve.
-                        </p>
                     </motion.div>
 
                     <Card className="bg-zinc-900/40 border-zinc-800 backdrop-blur-sm overflow-hidden border-2 shadow-2xl">
@@ -222,28 +217,23 @@ export default function BondingPage() {
                         </CardContent>
                     </Card>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 overflow-hidden">
-                            <p className="text-xs text-zinc-500 uppercase mb-1">Current Rate</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="p-3 md:p-4 rounded-2xl bg-zinc-900/30 border border-zinc-800/50">
+                            <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest mb-1">Current Rate</p>
                             <div className="flex items-center space-x-2 overflow-hidden">
-                                <Zap className="w-4 h-4 text-yellow-400 shrink-0" />
+                                <Zap className="w-3.5 h-3.5 text-yellow-500 shrink-0" />
                                 <div className="truncate flex flex-col">
-                                    <div className="flex items-baseline space-x-1">
-                                        <span className="text-lg md:text-xl font-bold text-white">
-                                            {funPerBnb > 0n ? parseFloat(formatEther(funPerBnb)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '1,000,000'}
-                                        </span>
-                                        <span className="text-[10px] text-zinc-600 uppercase">DOPA / {nativeSymbol}</span>
-                                    </div>
-                                    <div className="text-[10px] font-black text-emerald-500/80 leading-none">
-                                        ≈ ${dopaPriceUsd.toFixed(6)} USD
-                                    </div>
+                                    <span className="text-base font-black text-white leading-none">
+                                        {funPerBnb > 0n ? parseFloat(formatEther(funPerBnb)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '1,000,000'}
+                                    </span>
+                                    <span className="text-[8px] font-black text-emerald-500/80 uppercase mt-0.5">≈ ${dopaPriceUsd.toFixed(6)}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                            <p className="text-xs text-zinc-500 uppercase mb-1">Status</p>
-                            <p className="text-xl font-bold text-white flex items-center space-x-2">
-                                <ShieldCheck className="w-4 h-4 text-emerald-500" /> {sellEnabled ? 'Dual Trading' : 'Buy Only'}
+                        <div className="p-3 md:p-4 rounded-2xl bg-zinc-900/30 border border-zinc-800/50">
+                            <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest mb-1">Status</p>
+                            <p className="text-sm font-black text-white flex items-center space-x-2">
+                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> {sellEnabled ? 'TRADING' : 'BUY ONLY'}
                             </p>
                         </div>
                     </div>
@@ -274,30 +264,30 @@ export default function BondingPage() {
                             </div>
                         </CardHeader>
                         <CardContent className="pt-6 space-y-6">
-                            <div className="space-y-3">
-                                <label className="text-xs font-bold text-zinc-500 uppercase flex justify-between">
-                                    <span>{side === 'buy' ? 'Enter Amount' : 'Sell Amount'} ({side === 'buy' ? nativeSymbol : '$DOPA'})</span>
-                                    <span>Balance: {isConnected ? (side === 'buy' ? (bnbBalance ? `${parseFloat(bnbBalance.formatted).toFixed(4)} ${nativeSymbol}` : '...') : (funBalance ? `${parseFloat(funBalance.formatted).toLocaleString()} $DOPA` : '...')) : 'Connect'}</span>
-                                </label>
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between px-1">
+                                    <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{side === 'buy' ? 'PAY' : 'SELL'}</label>
+                                    <span className="text-[9px] font-bold text-zinc-500">BAL: {isConnected ? (side === 'buy' ? (bnbBalance ? `${parseFloat(bnbBalance.formatted).toFixed(3)} ${nativeSymbol}` : '...') : (funBalance ? `${parseFloat(funBalance.formatted).toLocaleString()} $DOPA` : '...')) : '---'}</span>
+                                </div>
                                 <div className="relative group">
                                     <Input
                                         type="number"
                                         value={side === 'buy' ? buyAmount : sellAmount}
                                         onChange={(e) => side === 'buy' ? setBuyAmount(e.target.value) : setSellAmount(e.target.value)}
-                                        className="h-16 text-2xl font-black bg-zinc-950 border-2 border-zinc-800 focus:border-emerald-500 transition-all pl-20"
+                                        className="h-14 text-xl font-black bg-zinc-950 border-zinc-800 focus:border-emerald-500 transition-all pl-16 rounded-xl"
                                         placeholder="0.0"
                                     />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-emerald-500 font-bold transition-colors pointer-events-none flex flex-col items-center">
-                                        <span>{side === 'buy' ? nativeSymbol : 'DOPA'}</span>
-                                        <span className="text-[10px] opacity-40 leading-none">
-                                            {side === 'buy' 
-                                                ? `$${(Number(buyAmount || 0) * bnbPrice).toFixed(2)}`
-                                                : `$${(Number(sellAmount || 0) * dopaPriceUsd).toFixed(4)}`
-                                            }
-                                        </span>
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-emerald-500 font-black transition-colors pointer-events-none flex flex-col items-center">
+                                        <span className="text-[10px]">{side === 'buy' ? nativeSymbol : 'DOPA'}</span>
+                                    </div>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-zinc-700">
+                                        {side === 'buy' 
+                                            ? `≈$${(Number(buyAmount || 0) * bnbPrice).toFixed(1)}`
+                                            : `≈$${(Number(sellAmount || 0) * dopaPriceUsd).toFixed(2)}`
+                                        }
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <div className="grid grid-cols-4 gap-1.5">
                                     {(side === 'buy' ? ['0.1', '0.5', '1.0', '5.0'] : ['1M', '10M', '50M', 'MAX']).map((amt) => (
                                         <button
                                             key={amt}
@@ -310,7 +300,7 @@ export default function BondingPage() {
                                                     else if (amt === 'MAX') setSellAmount(funBalance?.formatted || '0');
                                                 }
                                             }}
-                                            className="py-2 text-xs font-bold rounded bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/50 transition-all"
+                                            className="py-1.5 text-[9px] font-black rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 hover:text-emerald-400 hover:border-emerald-500/30 transition-all uppercase"
                                         >
                                             {amt}
                                         </button>
@@ -318,59 +308,39 @@ export default function BondingPage() {
                                 </div>
                             </div>
 
-                            <div className={`p-4 rounded-lg border space-y-4 ${side === 'buy' ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/5 border-rose-500/20'}`}>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-zinc-400">{side === 'buy' ? 'Estimated Tokens' : `Estimated ${nativeSymbol}`}</span>
-                                    <span className="text-white font-bold font-mono">
+                            <div className={`p-4 rounded-2xl border space-y-3 ${side === 'buy' ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-rose-500/5 border-rose-500/10'}`}>
+                                <div className="flex justify-between text-[10px]">
+                                    <span className="text-zinc-500 uppercase font-black tracking-widest">{side === 'buy' ? 'RECEIVE' : 'RECEIVE BNB'}</span>
+                                    <span className="text-white font-black font-mono">
                                         {side === 'buy' 
-                                            ? (estimatedTokens ? parseFloat(formatEther((estimatedTokens as bigint) || 0n)).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '0') + ' $DOPA'
-                                            : (estimatedBnb ? parseFloat(formatEther((estimatedBnb as bigint) || 0n)).toFixed(6) : '0') + ` ${nativeSymbol}`
+                                            ? (estimatedTokens ? parseFloat(formatEther((estimatedTokens as bigint) || 0n)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '0') + ' $DOPA'
+                                            : (estimatedBnb ? parseFloat(formatEther((estimatedBnb as bigint) || 0n)).toFixed(4) : '0') + ` ${nativeSymbol}`
                                         }
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-zinc-400">Value in USD</span>
-                                    <span className={`font-bold ${side === 'buy' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                        {side === 'buy'
-                                            ? `≈ $${(Number(buyAmount || 0) * bnbPrice).toFixed(2)}`
-                                            : `≈ $${(Number(formatEther((estimatedBnb as bigint) || 0n)) * bnbPrice).toFixed(2)}`
-                                        }
-                                    </span>
-                                </div>
-                                <div className="pt-4 border-t border-zinc-800">
+                                <div className="pt-2 border-t border-zinc-900/50">
                                     <Button
                                         variant={side === 'buy' ? "neon" : "outline"}
-                                        className={`w-full h-14 text-lg font-black relative overflow-hidden group ${side === 'sell' && !sellEnabled && 'opacity-70 cursor-not-allowed grayscale'}`}
+                                        className={`w-full h-14 text-base font-black italic tracking-tight rounded-2xl relative overflow-hidden group ${side === 'sell' && !sellEnabled && 'opacity-70 cursor-not-allowed grayscale'}`}
                                         onClick={side === 'buy' ? handleBuy : handleSell}
                                         disabled={isWritePending || isTxConfirming || !isConnected || (side === 'sell' && !sellEnabled)}
                                     >
                                         <div className="relative z-10 flex items-center justify-center space-x-3">
                                             {isWritePending || isTxConfirming ? (
-                                                <>
-                                                    <div className="w-4 h-4 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
-                                                    <span>TRANSACTING...</span>
-                                                </>
+                                                <Loader2 className="w-5 h-5 animate-spin" />
                                             ) : side === 'sell' && !sellEnabled ? (
                                                 <>
-                                                    <Lock className="w-5 h-5" />
-                                                    <span>TRADING LOCKED</span>
+                                                    <Lock className="w-4 h-4" />
+                                                    <span>LOCKED</span>
                                                 </>
                                             ) : !isConnected ? (
-                                                'CONNECT WALLET'
+                                                'CONNECT'
                                             ) : side === 'buy' ? (
-                                                'PURCHASE $DOPA'
+                                                'BUY $DOPA'
                                             ) : (
-                                                ((allowance as bigint) !== undefined && (allowance as bigint) < parseEther(sellAmount)) ? 'APPROVE $DOPA' : 'SELL $DOPA'
+                                                ((allowance as bigint) !== undefined && (allowance as bigint) < parseEther(sellAmount)) ? 'APPROVE' : 'SELL'
                                             )}
                                         </div>
-
-                                        {side === 'sell' && !sellEnabled && (
-                                            <div className="absolute inset-0 bg-zinc-950/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity p-2">
-                                                <p className="text-[10px] text-rose-400 font-bold leading-tight uppercase text-center px-4">
-                                                    🔒 Trading fully unlocks after 50 BNB goal is reached! Ape in now!
-                                                </p>
-                                            </div>
-                                        )}
                                     </Button>
                                 </div>
                             </div>

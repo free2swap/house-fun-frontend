@@ -383,73 +383,55 @@ export default function EarnPage() {
             <div className="max-w-6xl mx-auto relative z-10">
                 
                 {/* Header */}
-                <div className="text-center mb-16 px-4">
+                <div className="text-center mb-8 px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-500 tracking-tighter mb-4 italic drop-shadow-2xl">
-                            LIQUIDITY HUB
+                        <h1 className="text-3xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-500 tracking-tighter mb-2 uppercase italic italic">
+                            EARN <span className="text-emerald-400">YIELD</span>
                         </h1>
-                        <p className="text-zinc-500 font-bold tracking-[0.3em] uppercase text-xs md:text-sm">Institutional Yield & GMX-Style Terminal</p>
+                        <p className="text-zinc-500 font-bold tracking-widest uppercase text-[9px] md:text-sm">Institutional Liquidity Terminal</p>
                     </motion.div>
                 </div>
 
                 {/* Top Stats - Lux Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div className="grid grid-cols-2 gap-3 mb-8">
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-zinc-900/60 border border-emerald-500/20 rounded-[2.5rem] p-10 backdrop-blur-3xl relative overflow-hidden group shadow-[0_0_100px_rgba(16,185,129,0.03)]"
+                        className="bg-zinc-900/60 border border-emerald-500/20 rounded-3xl p-4 md:p-10 backdrop-blur-3xl relative overflow-hidden group"
                     >
-                        <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-[80px]" />
-                        <div className="relative z-10">
-                            <div className="flex items-center space-x-3 text-emerald-400 font-black text-xs uppercase tracking-[0.3em] mb-4">
-                                <Droplets className="w-4 h-4" />
+                        <div className="relative z-10 text-center sm:text-left">
+                            <div className="flex items-center justify-center sm:justify-start space-x-2 text-emerald-400 font-black text-[8px] uppercase tracking-widest mb-2">
+                                <Droplets className="w-3 h-3" />
                                 <span>Global TVL</span>
                             </div>
-                            <div className="flex flex-col items-end">
-                                <div className="flex items-baseline space-x-3">
-                                    <span className="text-6xl md:text-7xl font-black text-white tracking-tighter tabular-nums italic">
-                                        {glpTvl}
-                                    </span>
-                                    <div className="flex flex-col">
-                                        <span className="text-2xl font-bold text-zinc-600 italic leading-none">BNB</span>
-                                        <span className="text-xs font-black text-emerald-500/80 mt-1">≈ ${glpTvlUsd}</span>
-                                    </div>
-                                </div>
+                            <div className="flex flex-col">
+                                <span className="text-2xl md:text-7xl font-black text-white tracking-tighter italic">
+                                    {glpTvl} <span className="text-[10px] text-zinc-600 font-bold">BNB</span>
+                                </span>
+                                <span className="text-[9px] font-black text-emerald-500/60 mt-1 uppercase">≈ ${glpTvlUsd}</span>
                             </div>
-                            <p className="text-zinc-500 mt-4 font-medium">Fully collateralized protocol liquidity reservoir</p>
                         </div>
                     </motion.div>
 
                     <motion.div 
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-zinc-900/60 border border-amber-500/20 rounded-[2.5rem] p-10 backdrop-blur-3xl relative overflow-hidden group shadow-[0_0_100px_rgba(245,158,11,0.03)]"
+                        className="bg-zinc-900/60 border border-amber-500/20 rounded-3xl p-4 md:p-10 backdrop-blur-3xl relative overflow-hidden group"
                     >
-                        <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-[80px]" />
-                        <div className="relative z-10">
-                            <div className="flex items-center space-x-3 text-amber-400 font-black text-xs uppercase tracking-[0.3em] mb-4">
-                                <TrendingUp className="w-4 h-4" />
-                                <span>Estimated APY</span>
+                        <div className="relative z-10 text-center sm:text-left">
+                            <div className="flex items-center justify-center sm:justify-start space-x-2 text-amber-400 font-black text-[8px] uppercase tracking-widest mb-2">
+                                <TrendingUp className="w-3 h-3" />
+                                <span>Est. APY</span>
                             </div>
-                             <div className="flex flex-col items-end">
-                                <div className="flex items-baseline space-x-2">
-                                    <span className={`${dopaAPR > 9999 ? 'text-4xl' : 'text-6xl md:text-7xl'} font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 italic py-3`}>
-                                        {dopaAPR > 99999.9 ? '99,999.9' : dopaAPR.toLocaleString(undefined, { maximumFractionDigits: 1 })}
-                                    </span>
-                                    <span className={`${dopaAPR > 99999.9 ? 'text-2xl' : 'text-4xl'} font-black text-amber-500 italic`}>
-                                        {dopaAPR > 99999.9 ? '%+' : '%'}
-                                    </span>
-                                </div>
-                                {dopaAPR > 99999.9 && <span className="text-[10px] font-black text-amber-500/60 uppercase tracking-widest -mt-1">Max Display Cap</span>}
-                            </div>
-                            <p className="text-zinc-500 mt-4 font-medium">$DOPA rewards + 50% Platform net volume share</p>
-                            <div className="mt-2 text-[10px] text-zinc-600 font-bold uppercase tracking-wider flex items-center space-x-1">
-                                <AlertCircle className="w-3 h-3" />
-                                <span>Based on 1 DOPA ≈ {(Number(vBnbRaw) / Number(vFunRaw)).toFixed(8)} BNB</span>
+                             <div className="flex flex-col">
+                                <span className="text-2xl md:text-7xl font-black text-amber-500 italic">
+                                    {dopaAPR > 999.9 ? '999%+' : dopaAPR.toFixed(1) + '%'}
+                                </span>
+                                <span className="text-[9px] font-black text-amber-500/60 mt-1 uppercase tracking-tighter">Real Yield</span>
                             </div>
                         </div>
                     </motion.div>

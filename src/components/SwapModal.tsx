@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowLeftRight, ExternalLink, Info, Wallet, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { X, ArrowLeftRight, ExternalLink, Info, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { useAccount, useReadContract, useWriteContract, useBalance, usePublicClient } from 'wagmi';
 import { parseEther, formatEther, Address } from 'viem';
 import { Button } from '@/components/ui/Button';
@@ -22,7 +22,7 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
     const publicClient = usePublicClient();
     const [amountIn, setAmountIn] = useState('');
     const [estimatedOut, setEstimatedOut] = useState('0.00');
-    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isRefreshing] = useState(false);
     const [isSwapped, setIsSwapped] = useState(false); // USDT -> BNB or BNB -> USDT
 
     const ROUTER_ADDR = addresses.PancakeRouter as Address;
@@ -35,7 +35,7 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
     const { data: bnbBalance } = useBalance({ address });
     const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadContract({
         address: USDT_ADDR,
-        abi: ABIS.DopaToken, // Standard ERC20 balanceOf
+        abi: ABIS.DopaToken, 
         functionName: 'balanceOf',
         args: address ? [address] : undefined,
         query: { enabled: !!address, refetchInterval: 10000 }
@@ -43,13 +43,13 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
 
     const { data: allowance, refetch: refetchAllowance } = useReadContract({
         address: USDT_ADDR,
-        abi: ABIS.DopaToken, // Standard ERC20 allowance
+        abi: ABIS.DopaToken, 
         functionName: 'allowance',
         args: address ? [address, ROUTER_ADDR] : undefined,
         query: { enabled: !!address, refetchInterval: 10000 }
     });
 
-    const { data: amountsOut, refetch: refetchAmountsOut } = useReadContract({
+    const { data: amountsOut } = useReadContract({
         address: ROUTER_ADDR,
         abi: ABIS.PancakeRouter,
         functionName: 'getAmountsOut',
@@ -80,13 +80,14 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
         const currentUsdtBal = (usdtBalanceData as bigint) || 0n;
         const currentAllowance = (allowance as bigint) || 0n;
 
-        if (valIn > currentUsdtBal) return toast.error("Insufficient USDT balance");
+        if (!isSwapped && valIn > currentUsdtBal) return toast.error("Insufficient USDT balance");
+        if (isSwapped && bnbBalance && valIn > bnbBalance.value) return toast.error("Insufficient BNB balance");
 
         const tid = toast.loading("Processing swap sequence...", { id: 'swap-op' });
 
         try {
-            // 1. Approve if needed
-            if (currentAllowance < valIn) {
+            // 1. Approve if needed (only for USDT -> BNB)
+            if (!isSwapped && currentAllowance < valIn) {
                 toast.loading("Approving USDT...", { id: 'swap-op' });
                 const tx = await approveAsync({
                     address: USDT_ADDR,
@@ -141,56 +142,63 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[1100] flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-[1100] flex items-center justify-center p-3 sm:p-4">
+                    {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/90 backdrop-blur-md"
+                        className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
                     />
 
+                    {/* Modal Container - Premium Drawer Feel */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-[2.5rem] shadow-2xl overflow-hidden"
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-[0_0_100px_rgba(16,185,129,0.1)] overflow-hidden flex flex-col max-h-[92vh] mt-auto sm:mt-0"
                     >
-                        {/* Header */}
-                        <div className="p-8 border-b border-zinc-900 bg-zinc-900/40 relative">
-                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-indigo-500" />
+                        {/* Pull Handle for Mobile */}
+                        <div className="w-12 h-1 bg-zinc-800 rounded-full mx-auto mt-3 mb-1 sm:hidden opacity-50" />
+                        {/* Header - Premium Gradient */}
+                        <div className="p-6 border-b border-white/5 bg-gradient-to-br from-emerald-500/10 via-zinc-950 to-indigo-500/10 relative flex-shrink-0">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-4">
-                                    <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
-                                        <ArrowLeftRight className="w-6 h-6 text-emerald-400" />
+                                <div className="flex items-center space-x-3">
+                                    <div className="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
+                                        <ArrowLeftRight className="w-5 h-5 text-emerald-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-black text-white italic tracking-tighter">INSTANT SWAP</h3>
-                                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">Direct DEX Routing</p>
+                                        <h3 className="text-lg font-black text-white italic tracking-tighter uppercase leading-none">Instant Swap</h3>
+                                        <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">DEX Optimized Routing</p>
                                     </div>
                                 </div>
-                                <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-white transition-all">
-                                    <X className="w-6 h-6" />
+                                <button 
+                                    onClick={onClose} 
+                                    className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-zinc-400 transition-all border border-white/10"
+                                >
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
                         </div>
 
-                        {/* Swap Body */}
-                        <div className="p-8 space-y-6">
+                        {/* Scrollable Body Content */}
+                        <div className="flex-1 overflow-y-auto p-5 sm:p-8 space-y-5 custom-scrollbar">
                             {/* Input Card */}
-                            <div className="bg-zinc-900/60 p-6 rounded-[1.8rem] border border-zinc-800/50">
+                            <div className="bg-zinc-900/60 p-5 sm:p-6 rounded-[1.8rem] border border-zinc-800/50">
                                 <div className="flex justify-between items-center mb-4">
-                                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">{isSwapped ? 'You Sell' : 'You Sell'}</span>
-                                    <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
+                                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">You Sell</span>
+                                    <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800 shadow-inner">
                                         {isSwapped ? (
                                             <>
                                                 <div className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center text-[10px] font-black text-black">B</div>
-                                                <span className="text-xs font-black text-white">BNB</span>
+                                                <span className="text-xs font-black text-white tracking-tight">BNB</span>
                                             </>
                                         ) : (
                                             <>
                                                 <div className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] font-black text-white">$</div>
-                                                <span className="text-xs font-black text-white">USDT</span>
+                                                <span className="text-xs font-black text-white tracking-tight">USDT</span>
                                             </>
                                         )}
                                     </div>
@@ -201,16 +209,16 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
                                         value={amountIn}
                                         onChange={(e) => setAmountIn(e.target.value)}
                                         placeholder="0.00"
-                                        className="bg-transparent border-none p-0 text-3xl font-black focus:ring-0 text-white placeholder-zinc-800 h-10"
+                                        className="bg-transparent border-none p-0 text-2xl sm:text-3xl font-black focus:ring-0 text-white placeholder-zinc-800 h-10 w-full"
                                     />
-                                    <div className="flex flex-col items-end">
-                                        <span className="text-xs text-zinc-500 font-bold">Balance</span>
-                                        <span className="text-[10px] font-mono text-zinc-400">
+                                    <div className="flex flex-col items-end flex-shrink-0">
+                                        <span className="text-[10px] text-zinc-600 font-bold uppercase">Balance</span>
+                                        <span className="text-[10px] font-mono text-emerald-400/80 font-bold">
                                             {isSwapped ? (bnbBalance ? Number(bnbBalance.formatted).toFixed(4) : '0.00') : usdtBalance}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="mt-4 flex space-x-2">
+                                <div className="mt-4 flex flex-wrap gap-2">
                                     {[25, 50, 100].map(pct => (
                                         <button 
                                             key={pct}
@@ -218,7 +226,7 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
                                                 const bal = isSwapped ? Number(bnbBalance?.formatted || 0) : Number(usdtBalance);
                                                 setAmountIn((bal * pct / 100).toFixed(pct === 100 ? 6 : 2));
                                             }}
-                                            className="px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-xl text-[10px] font-black text-zinc-500 hover:text-emerald-400 hover:border-emerald-500/30 transition-all uppercase"
+                                            className="px-3 py-1.5 bg-zinc-950 border border-zinc-800/60 rounded-xl text-[10px] font-black text-zinc-500 hover:text-emerald-400 hover:border-emerald-500/40 transition-all active:scale-95"
                                         >
                                             {pct === 100 ? 'MAX' : `${pct}%`}
                                         </button>
@@ -226,64 +234,63 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
                                 </div>
                             </div>
 
-                            {/* Separator / Switch Icon */}
-                            <div className="flex justify-center -my-9 relative z-10">
+                            {/* Swap Switcher */}
+                            <div className="flex justify-center -my-8 relative z-10">
                                 <button 
                                     onClick={() => {
                                         setIsSwapped(!isSwapped);
                                         setAmountIn('');
                                         setEstimatedOut('0.00');
                                     }}
-                                    className="bg-zinc-950 p-3 rounded-2xl border border-zinc-800 shadow-xl group cursor-pointer hover:border-emerald-500/50 transition-all active:scale-95"
+                                    className="bg-zinc-950 p-3.5 rounded-2xl border border-zinc-800 shadow-2xl group active:scale-90 transition-transform"
                                 >
                                     <RefreshCw className={`w-5 h-5 text-emerald-500 transition-transform duration-500 ${isRefreshing ? 'animate-spin' : ''} group-hover:rotate-180`} />
                                 </button>
                             </div>
 
                             {/* Output Card */}
-                            <div className="bg-zinc-900/60 p-6 rounded-[1.8rem] border border-zinc-800/50 pt-10">
+                            <div className="bg-zinc-900/60 p-5 sm:p-6 rounded-[1.8rem] border border-zinc-800/50 pt-9 sm:pt-10">
                                 <div className="flex justify-between items-center mb-4">
                                     <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">You Receive</span>
-                                    <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
+                                    <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800 shadow-inner">
                                         {!isSwapped ? (
                                             <>
                                                 <div className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center text-[10px] font-black text-black">B</div>
-                                                <span className="text-xs font-black text-white">BNB</span>
+                                                <span className="text-xs font-black text-white tracking-tight">BNB</span>
                                             </>
                                         ) : (
                                             <>
                                                 <div className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] font-black text-white">$</div>
-                                                <span className="text-xs font-black text-white">USDT</span>
+                                                <span className="text-xs font-black text-white tracking-tight">USDT</span>
                                             </>
                                         )}
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-3xl font-black text-white italic tracking-tighter tabular-nums">
+                                <div className="flex items-center justify-between overflow-hidden">
+                                    <span className="text-2xl sm:text-3xl font-black text-white italic tracking-tighter tabular-nums truncate mr-4">
                                         {Number(estimatedOut).toFixed(6)}
                                     </span>
-                                    <div className="flex flex-col items-end">
-                                        <span className="text-xs text-zinc-500 font-bold">Native Token</span>
-                                        <span className="text-[10px] text-zinc-600 font-mono tracking-tighter">Est. Value</span>
+                                    <div className="flex flex-col items-end flex-shrink-0">
+                                        <span className="text-[10px] text-zinc-600 font-bold uppercase">Estimated</span>
+                                        <span className="text-[10px] text-zinc-700 font-mono">Market Rate</span>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Actions */}
-                            <div className="space-y-3 pt-4">
+                            {/* Footer Actions - Inside Scroll for Safety */}
+                            <div className="space-y-4 pt-4 pb-2">
                                 <Button
                                     onClick={handleSwap}
                                     disabled={isSwapping || isApproving || !amountIn || Number(amountIn) <= 0}
-                                    variant="neon"
-                                    className="w-full h-16 text-lg font-black italic tracking-tight"
+                                    className="w-full h-14 sm:h-16 text-lg font-black italic tracking-tight bg-emerald-500 hover:bg-emerald-400 text-black shadow-[0_0_30px_rgba(16,185,129,0.2)] rounded-2xl transition-all active:scale-95"
                                 >
                                     {isSwapping ? 'SWAPPING...' : isApproving ? 'APPROVING...' : 'CONFIRM SWAP'}
                                 </Button>
                                 
-                                <div className="flex items-center justify-between px-2">
-                                    <div className="flex items-center space-x-1.5 text-zinc-500">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-2">
+                                    <div className="flex items-center space-x-1.5 text-zinc-600">
                                         <Info className="w-3 h-3" />
-                                        <span className="text-[9px] font-bold uppercase tracking-widest">Slippage: 5.0%</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-widest">Slippage: 5.0% Max</span>
                                     </div>
                                     <a 
                                         href={bscscanUrl} 
@@ -291,18 +298,31 @@ export function SwapModal({ isOpen, onClose }: SwapModalProps) {
                                         rel="noopener noreferrer"
                                         className="flex items-center space-x-1 text-[9px] font-black text-zinc-600 hover:text-emerald-400 uppercase tracking-widest group"
                                     >
-                                        <span>Verified Router</span>
-                                        <ExternalLink className="w-2.5 h-2.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                        <span>On-Chain Verified</span>
+                                        <ExternalLink className="w-2.5 h-2.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Safety Footer */}
-                        <div className="p-4 bg-zinc-950 border-t border-zinc-900 flex items-center justify-center space-x-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500/50" />
-                            <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-[0.2em]">PancakeSwap V2 Secure Route</span>
+                        {/* Safety Lock - Fixed at Bottom */}
+                        <div className="p-4 bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-900 flex items-center justify-center space-x-2 flex-shrink-0">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500/40" />
+                            <span className="text-[9px] text-zinc-700 font-bold uppercase tracking-[0.3em]">Institutional Grade Security</span>
                         </div>
+
+                        <style jsx>{`
+                            .custom-scrollbar::-webkit-scrollbar {
+                                width: 4px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-track {
+                                background: transparent;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb {
+                                background: rgba(16, 185, 129, 0.1);
+                                border-radius: 10px;
+                            }
+                        `}</style>
                     </motion.div>
                 </div>
             )}

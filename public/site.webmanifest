@@ -2,28 +2,19 @@
     "name": "DOPAHOUSE | The Decentralized Web3 Casino",
     "short_name": "DOPAHOUSE",
     "description": "Play Provably Fair games or launch your own house. Join the next-generation GambleFi ecosystem.",
-    "start_url": "/lobby",
-    "display": "standalone",
-    "orientation": "portrait",
-    "background_color": "#09090b",
-    "theme_color": "#10b981",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "type": "image/png"
         },
         {
             "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "/apple-touch-icon.png",
-            "sizes": "180x180",
             "type": "image/png"
         }
-    ]
+    ],
+    "theme_color": "#10b981",
+    "background_color": "#09090b",
+    "display": "standalone"
 }
