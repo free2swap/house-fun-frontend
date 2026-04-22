@@ -241,7 +241,6 @@ export default function AffiliatePage() {
                     </div>
                 </CardContent>
             </Card>
->
 
             <div className="grid grid-cols-1 lg:grid-cols-3 space-y-8 lg:space-y-0 lg:space-x-8 mb-8">
                 {/* GIANT COMMISSION ODOMETER */}
