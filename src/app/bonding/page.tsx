@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Progress } from '@/components/ui/Progress';
-import { Flame, Rocket, Zap, TrendingUp, Info, ShieldCheck, Coins, Lock, Unlock, ArrowRightLeft } from 'lucide-react';
+import { Flame, Rocket, Zap, TrendingUp, Info, ShieldCheck, Coins, Lock, Unlock, ArrowRightLeft, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBnbPrice } from '@/hooks/useBnbPrice';

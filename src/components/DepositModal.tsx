@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { QRCodeSVG } from 'qrcode.react';
 import { usePrivy } from '@privy-io/react-auth';
@@ -69,14 +70,26 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
     };
 
     return (
-            {/* Modal Content - Premium Drawer Feel */}
-            <motion.div
-                initial={{ opacity: 0, y: "100%" }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[95vh] mt-auto sm:mt-0"
-            >
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-[1200] flex items-center justify-center p-4">
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity"
+                    />
+
+                    {/* Modal Content - Premium Drawer Feel */}
+                    <motion.div
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[95vh] mt-auto sm:mt-0"
+                    >
                 {/* Pull Handle for Mobile */}
                 <div className="w-12 h-1 bg-zinc-800 rounded-full mx-auto mt-3 mb-1 sm:hidden opacity-50" />
                 {/* Progress Bar (Tutorial) */}
@@ -332,6 +345,8 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
                     )}
                 </div>
             </motion.div>
-        </div>
+                </div>
+            )}
+        </AnimatePresence>
     );
 }
