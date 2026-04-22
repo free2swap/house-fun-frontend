@@ -112,6 +112,9 @@ export function Navbar() {
                             <Link href="/affiliate" className="text-zinc-400 hover:text-white transition-colors font-medium">
                                 Referrals
                             </Link>
+                            <Link href="/airdrop" className="text-zinc-400 hover:text-white transition-colors font-medium flex items-center space-x-1">
+                                <Zap className="w-4 h-4 text-purple-400" /> <span>Airdrop</span>
+                            </Link>
                             <Link href="/earn" className="text-amber-400 hover:text-amber-300 transition-colors font-bold drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]">
                                 EARN 🚀
                             </Link>
@@ -147,7 +150,7 @@ export function Navbar() {
                                 >
                                     <Zap className="w-4 h-4 text-purple-400 fill-purple-400/50 group-hover:animate-pulse" />
                                     <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 text-sm">
-                                        1,250 PTS
+                                        REWARDS 🎁
                                     </span>
                                 </div>
                             )}
@@ -218,7 +221,7 @@ export function Navbar() {
                                 >
                                     <Zap className="w-3 h-3 text-purple-400 fill-purple-400/50" />
                                     <span className="text-[10px] font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 leading-none">
-                                        1.25k
+                                        REWARDS
                                     </span>
                                 </div>
                             )}
@@ -294,6 +297,10 @@ export function Navbar() {
                         </Link>
                         <Link href="/affiliate" onClick={closeMenu} className="px-3 py-4 text-zinc-300 font-medium text-lg border-b border-zinc-800/50 hover:text-emerald-400 hover:bg-zinc-900/50 rounded-md transition-colors">
                             Referrals Hub
+                        </Link>
+                        <Link href="/airdrop" onClick={closeMenu} className="px-3 py-4 text-purple-400 font-bold text-lg border-b border-zinc-800/50 hover:bg-zinc-900/50 rounded-md transition-colors flex items-center justify-between">
+                            <span>Airdrop & Tasks</span>
+                            <Zap className="w-5 h-5" />
                         </Link>
                         <Link href="/earn" onClick={closeMenu} className="px-3 py-4 text-amber-400 font-bold text-lg hover:bg-zinc-900/50 rounded-md transition-colors flex items-center justify-between">
                             <span>EARN (Staking)</span>

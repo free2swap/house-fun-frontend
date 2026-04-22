@@ -7,6 +7,7 @@ import { TelegramProvider } from "@/components/TelegramProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import FOMOBanner from "@/components/FOMOBanner";
+import { IncentiveModal } from "@/components/IncentiveModal";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
@@ -94,6 +95,7 @@ export default function RootLayout({
               />
               <Navbar />
               <FOMOBanner />
+              <IncentiveModal />
               <main className="flex-1">
                 {children}
               </main>

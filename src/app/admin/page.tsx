@@ -344,7 +344,7 @@ export default function AdminDashboard() {
                                     </CardTitle>
                                     <CardDescription className="text-xs">Monitoring real-time performance of individual house vaults.</CardDescription>
                                 </div>
-                                <Button size="sm" variant="outline" className="text-[10px] font-bold border-zinc-800" onClick={() => refetch()}>
+                                <Button size="default" variant="outline" className="text-[10px] font-bold border-zinc-800" onClick={() => refetch()}>
                                     <RefreshCcw className="w-3 h-3 mr-1" /> REFRESH DATA
                                 </Button>
                             </CardHeader>
@@ -474,7 +474,7 @@ export default function AdminDashboard() {
                                                     </p>
                                                 </div>
                                                 <Button 
-                                                    size="sm"
+                                                    size="default"
                                                     variant={c.paused ? "default" : "destructive"} 
                                                     onClick={() => togglePause(c.name, c.addr as string, c.abi, !!c.paused)}
                                                     className="font-black text-[10px]"
@@ -519,7 +519,7 @@ export default function AdminDashboard() {
                                                 </label>
                                                 <div className="flex gap-2">
                                                     <input value={virtualRebate} onChange={e => setVirtualRebate(e.target.value)} className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-1.5 text-sm" />
-                                                    <Button size="sm" onClick={() => handleAction("Updating Rebate...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setVirtualBankerRebatePercent', args: [BigInt(virtualRebate)] }))}><Save className="w-4 h-4" /></Button>
+                                                    <Button size="default" onClick={() => handleAction("Updating Rebate...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setVirtualBankerRebatePercent', args: [BigInt(virtualRebate)] }))}><Save className="w-4 h-4" /></Button>
                                                 </div>
                                             </div>
                                             <div className="p-4 rounded-xl bg-black/20 border border-zinc-800 space-y-3">
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                                                 </label>
                                                 <div className="flex gap-2">
                                                     <input value={vipDiscount} onChange={e => setVipDiscount(e.target.value)} className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-1.5 text-sm" />
-                                                    <Button size="sm" onClick={() => handleAction("Updating VIP...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setVipPlatformRakeDiscountBps', args: [BigInt(vipDiscount)] }))}><Save className="w-4 h-4" /></Button>
+                                                    <Button size="default" onClick={() => handleAction("Updating VIP...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setVipPlatformRakeDiscountBps', args: [BigInt(vipDiscount)] }))}><Save className="w-4 h-4" /></Button>
                                                 </div>
                                             </div>
                                             <div className="p-4 rounded-xl bg-black/20 border border-zinc-800 space-y-3">
@@ -537,7 +537,7 @@ export default function AdminDashboard() {
                                                 </label>
                                                 <div className="flex gap-2">
                                                     <input value={refundDelay} onChange={e => setRefundDelay(e.target.value)} className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-sm" />
-                                                    <Button size="sm" onClick={() => handleAction("Updating Delay...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setRefundTimeDelay', args: [BigInt(refundDelay)] }))}><Save className="w-4 h-4" /></Button>
+                                                    <Button size="default" onClick={() => handleAction("Updating Delay...", writeContractAsync({ address: addresses.BetRouter as `0x${string}`, abi: ABIS.BetRouter as any, functionName: 'setRefundTimeDelay', args: [BigInt(refundDelay)] }))}><Save className="w-4 h-4" /></Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -551,7 +551,7 @@ export default function AdminDashboard() {
                                             <CardTitle className="text-orange-400 flex items-center gap-2"><Award className="w-5 h-5" /> Staked DOPA Thresholds</CardTitle>
                                             <CardDescription>Required $DOPA staking for VIP status.</CardDescription>
                                         </div>
-                                        <Button onClick={updateThresholds} size="sm" className="bg-orange-600 hover:bg-orange-700 font-bold">
+                                        <Button onClick={updateThresholds} size="default" className="bg-orange-600 hover:bg-orange-700 font-bold">
                                             <Save className="w-4 h-4 mr-2" /> UPDATE THRESHOLDS
                                         </Button>
                                     </CardHeader>
@@ -606,21 +606,21 @@ export default function AdminDashboard() {
                                             <label className="text-[10px] text-zinc-400 font-bold uppercase">Certified House</label>
                                             <div className="flex gap-2">
                                                 <input value={marketingAddr.certified} onChange={e => setMarketingAddr({...marketingAddr, certified: e.target.value})} className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 text-xs font-mono" placeholder="0x..." />
-                                                <Button size="sm" onClick={() => handleAction("Certifying...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setCertification', args: [marketingAddr.certified as `0x${string}`, true] }))}>GRANT</Button>
+                                                <Button size="default" onClick={() => handleAction("Certifying...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setCertification', args: [marketingAddr.certified as `0x${string}`, true] }))}>GRANT</Button>
                                             </div>
                                          </div>
                                          <div className="space-y-2">
                                             <label className="text-[10px] text-zinc-400 font-bold uppercase">Featured House</label>
                                             <div className="flex gap-2">
                                                 <input value={marketingAddr.featured} onChange={e => setMarketingAddr({...marketingAddr, featured: e.target.value})} className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 text-xs font-mono" placeholder="0x..." />
-                                                <Button size="sm" onClick={() => handleAction("Featuring...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setFeaturedStatus', args: [marketingAddr.featured as `0x${string}`, true] }))}>GRANT</Button>
+                                                <Button size="default" onClick={() => handleAction("Featuring...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setFeaturedStatus', args: [marketingAddr.featured as `0x${string}`, true] }))}>GRANT</Button>
                                             </div>
                                          </div>
                                          <div className="space-y-2">
                                             <label className="text-[10px] text-zinc-400 font-bold uppercase">Fee Exemption</label>
                                             <div className="flex gap-2">
                                                 <input value={marketingAddr.exempt} onChange={e => setMarketingAddr({...marketingAddr, exempt: e.target.value})} className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 text-xs font-mono" placeholder="0x..." />
-                                                <Button size="sm" onClick={() => handleAction("Exempting...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setFeeExemption', args: [marketingAddr.exempt as `0x${string}`, true] }))}>GRANT</Button>
+                                                <Button size="default" onClick={() => handleAction("Exempting...", writeContractAsync({ address: addresses.HouseFactory as `0x${string}`, abi: ABIS.HouseFactory as any, functionName: 'setFeeExemption', args: [marketingAddr.exempt as `0x${string}`, true] }))}>GRANT</Button>
                                             </div>
                                          </div>
                                     </CardContent>
