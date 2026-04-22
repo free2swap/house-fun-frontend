@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 142.1 70.6% 45.3%; /* Emerald */
+  --primary-glow: 142.1 70.6% 45.3% / 0.3;
+  --secondary: 45 93.4% 47.5%; /* Gold */
+  --secondary-glow: 45 93.4% 47.5% / 0.3;
+}
+
+body {
+  background: radial-gradient(circle at top center, #1a1b1e 0%, #09090b 100%);
+  color: hsl(var(--foreground));
+  font-family: 'Outfit', sans-serif;
+}
+
+/* 高级毛玻璃效果 */
+.glass-panel {
+  @apply bg-zinc-950/40 border border-white/10 backdrop-blur-xl shadow-2xl;
+  box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* 霓虹发光文字 */
+.text-neon-emerald {
+  text-shadow: 0 0 10px hsla(142.1, 70.6%, 45.3%, 0.5);
+}
+
+.text-neon-gold {
+  text-shadow: 0 0 12px hsla(45, 93.4%, 47.5%, 0.6);
+}
+
+/* 动态边框流光 */
+.border-glow-emerald {
+  box-shadow: 0 0 15px -3px hsla(142.1, 70.6%, 45.3%, 0.4);
+}
+
+/* 跑马灯轨道优化 */
+.marquee-track {
+  @apply bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-emerald-500/10 border-y border-emerald-500/20 shadow-[inset_0_0_20px_rgba(16,185,129,0.1)];
+}
+
+/* Custom neon gradients and animations for the Vegas feel */
+.bg-neon-gradient {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+}
+
+.text-neon-gradient {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Premium Button Effects */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(16, 185, 129, 0.2); }
+  50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee-shimmer {
+  background: linear-gradient(90deg, #09090b 25%, #10b981 50%, #09090b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
