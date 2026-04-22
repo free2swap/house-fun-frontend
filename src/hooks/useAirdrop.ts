@@ -9,7 +9,7 @@ interface PointsData {
     tg_id?: number | string | null;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_BOT_API_URL || 'http://localhost:3001/api';
+const API_BASE = process.env.NEXT_PUBLIC_BOT_API_URL || 'https://real.nexofinance.dpdns.org/api';
 
 export function useAirdrop() {
     const { address, isConnected } = useAccount();
@@ -51,10 +51,10 @@ export function useAirdrop() {
             const res = await fetch(`${API_BASE}/bind-wallet`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    tg_id: parseInt(tgId), 
-                    wallet_address: address, 
-                    signature 
+                body: JSON.stringify({
+                    tg_id: parseInt(tgId),
+                    wallet_address: address,
+                    signature
                 }),
             });
 

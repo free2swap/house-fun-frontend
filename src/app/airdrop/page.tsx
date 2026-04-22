@@ -20,10 +20,11 @@ export default function AirdropPage() {
     const [claimingTask, setClaimingTask] = useState<string | null>(null);
     const [proofs, setProofs] = useState({
         follow: { handle: '', link: '' },
+        like: { handle: '', link: '' },
         retweet: { handle: '', link: '' }
     });
 
-    const handleClaim = async (taskType: 'follow' | 'retweet') => {
+    const handleClaim = async (taskType: 'follow' | 'like' | 'retweet') => {
         if (!address) return toast.error("Please connect wallet");
         
         const { handle, link } = proofs[taskType];
@@ -181,6 +182,56 @@ export default function AirdropPage() {
                                         className="bg-emerald-600 hover:bg-emerald-500 text-white font-black h-10 px-6 text-[11px]"
                                     >
                                         {claimingTask === 'follow' ? <Loader2 className="w-4 h-4 animate-spin" /> : 'CLAIM'}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Like Task */}
+                        <div className="bg-zinc-900/60 border border-zinc-800 rounded-[1.5rem] p-6 hover:border-amber-500/30 transition-all group flex flex-col h-full">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="w-12 h-12 bg-zinc-950 rounded-2xl flex items-center justify-center border border-zinc-800 group-hover:border-amber-500/50 transition-colors">
+                                    <Trophy className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="text-right">
+                                    <span className="text-xs font-black text-amber-500">+50 PTS</span>
+                                    <p className="text-[8px] text-zinc-500 uppercase font-black">Audit Post</p>
+                                </div>
+                            </div>
+                            <h3 className="text-lg font-black text-white mb-2">Show the Love</h3>
+                            <p className="text-xs text-zinc-500 mb-6 font-medium">Like the pinned post and submit your profile link for audit.</p>
+                            
+                            <div className="space-y-3 mt-auto">
+                                <div className="grid grid-cols-1 gap-2">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Twitter ID (@handle)"
+                                        className="bg-black/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500/50 transition-all font-mono"
+                                        value={proofs.like.handle}
+                                        onChange={(e) => setProofs({...proofs, like: {...proofs.like, handle: e.target.value}})}
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Your Profile Link"
+                                        className="bg-black/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500/50 transition-all font-mono"
+                                        value={proofs.like.link}
+                                        onChange={(e) => setProofs({...proofs, like: {...proofs.like, link: e.target.value}})}
+                                    />
+                                </div>
+                                <div className="flex space-x-3">
+                                    <Button 
+                                        variant="outline"
+                                        onClick={() => window.open('https://x.com/dopahouse/status/2046911930452091117', '_blank')}
+                                        className="flex-1 bg-zinc-950 border-zinc-800 text-[11px] font-black hover:bg-zinc-900 h-10"
+                                    >
+                                        LIKE <ExternalLink className="w-3 h-3 ml-2" />
+                                    </Button>
+                                    <Button 
+                                        onClick={() => handleClaim('like')}
+                                        disabled={claimingTask === 'like'}
+                                        className="bg-amber-600 hover:bg-amber-500 text-white font-black h-10 px-6 text-[11px]"
+                                    >
+                                        {claimingTask === 'like' ? <Loader2 className="w-4 h-4 animate-spin" /> : 'CLAIM'}
                                     </Button>
                                 </div>
                             </div>
