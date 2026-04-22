@@ -6,6 +6,7 @@ interface PointsData {
     invited_count: number;
     wallet_address?: string;
     username?: string;
+    tg_id?: number | string | null;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_BOT_API_URL || 'http://localhost:3001/api';
