@@ -88,7 +88,7 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[95vh] mt-auto sm:mt-0"
+                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] mt-auto sm:mt-0"
                     >
                 {/* Pull Handle for Mobile */}
                 <div className="w-12 h-1 bg-zinc-800 rounded-full mx-auto mt-3 mb-1 sm:hidden opacity-50" />
@@ -147,7 +147,7 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
                     </div>
                 </div>
 
-                <div className="p-8">
+                <div className="flex-1 overflow-y-auto p-6 sm:p-8 custom-scrollbar">
                     {activeTab === 'transfer' ? (
                         /* Direct Deposit View */
                         <div className="space-y-6 flex flex-col items-center">
@@ -347,6 +347,18 @@ export function DepositModal({ isOpen, onClose, onOpenSwap }: DepositModalProps)
             </motion.div>
                 </div>
             )}
+            <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(16, 185, 129, 0.1);
+                    border-radius: 10px;
+                }
+            `}</style>
         </AnimatePresence>
     );
 }

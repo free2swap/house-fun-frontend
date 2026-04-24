@@ -36,7 +36,8 @@ export function BankerCalculator({ nativeSymbol, bnbPrice, dopaPrice, onAction }
     };
 
     return (
-        <Card className="bg-zinc-900/40 backdrop-blur-xl border-zinc-800/80 shadow-2xl overflow-hidden relative group">
+        <>
+            <Card className="bg-zinc-900/40 backdrop-blur-xl border-zinc-800/80 shadow-2xl overflow-hidden relative group">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-purple-500/5 pointer-events-none" />
             
             <CardHeader className="relative">
@@ -204,7 +205,7 @@ export function BankerCalculator({ nativeSymbol, bnbPrice, dopaPrice, onAction }
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-2xl w-full relative z-10 shadow-3xl"
+                            className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-2xl w-full relative z-10 shadow-3xl max-h-[90vh] overflow-y-auto custom-scrollbar"
                         >
                             <button 
                                 onClick={() => setShowLearnMore(false)}
@@ -275,5 +276,18 @@ export function BankerCalculator({ nativeSymbol, bnbPrice, dopaPrice, onAction }
                 )}
             </AnimatePresence>
         </Card>
+            <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(16, 185, 129, 0.1);
+                    border-radius: 10px;
+                }
+            `}</style>
+        </>
     );
-}
+};
