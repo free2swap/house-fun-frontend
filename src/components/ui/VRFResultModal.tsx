@@ -140,30 +140,41 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                             ) : (
                                 <div className="flex flex-col items-center">
                                     {/* Result View */}
-                                    <motion.div 
-                                        initial={{ scale: 0, rotate: -20 }}
-                                        animate={{ scale: 1, rotate: 0 }}
-                                        className={`w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-2xl ${
-                                            won 
-                                                ? 'bg-gradient-to-br from-yellow-400 to-amber-600 shadow-yellow-500/40' 
-                                                : 'bg-zinc-900 border border-zinc-800'
-                                        }`}
-                                    >
-                                        {won ? <Trophy className="w-12 h-12 text-zinc-950" /> : <Skull className="w-12 h-12 text-zinc-700" />}
-                                    </motion.div>
+                                    <div className="relative">
+                                         {won && (
+                                             <motion.div 
+                                                 initial={{ scale: 0.5, opacity: 0 }}
+                                                 animate={{ scale: 1.5, opacity: [0, 0.5, 0] }}
+                                                 transition={{ duration: 2, repeat: Infinity }}
+                                                 className="absolute inset-0 bg-yellow-400 rounded-full blur-3xl -z-10"
+                                             />
+                                         )}
+                                         <motion.div 
+                                             initial={{ scale: 0, rotate: -20 }}
+                                             animate={{ scale: 1, rotate: 0 }}
+                                             className={`w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-2xl relative z-10 ${
+                                                 won 
+                                                     ? 'bg-gradient-to-br from-yellow-300 via-amber-500 to-yellow-600 shadow-yellow-500/50 border-2 border-yellow-200/50' 
+                                                     : 'bg-zinc-900 border border-zinc-800'
+                                             }`}
+                                         >
+                                             {won ? <Trophy className="w-12 h-12 text-zinc-950 drop-shadow-lg" /> : <Skull className="w-12 h-12 text-zinc-700" />}
+                                         </motion.div>
+                                    </div>
 
                                     <motion.h2 
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        className={`text-4xl font-black mb-1 italic uppercase tracking-tighter ${
-                                            won ? 'text-yellow-400' : 'text-zinc-500'
+                                        className={`text-4xl font-black mb-1 italic uppercase tracking-tighter text-center ${
+                                            won ? 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]' : 'text-zinc-500'
                                         }`}
                                     >
-                                        {won ? 'BIG WIN!' : 'BET LOST'}
+                                        {won ? 'JACKPOT WIN!' : 'BET LOST'}
                                     </motion.h2>
 
-                                    <p className="text-zinc-400 font-bold text-base mb-6 tracking-widest uppercase italic">
-                                        {result}
+                                    <p className="text-zinc-400 font-bold text-base mb-6 tracking-widest uppercase italic flex items-center space-x-2">
+                                        <span>{result}</span>
+                                        {won && <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse" />}
                                     </p>
 
                                     <div className="w-full grid grid-cols-2 gap-3 mb-6">

@@ -93,7 +93,11 @@ export function HouseCard({ data, index }: { data: HouseData; index?: number }) 
                     <Link href={`/play/${address}`} className="block">
                         <Button 
                             variant={isTop3 ? "neon" : "outline"} 
-                            className={`w-full h-11 sm:h-12 rounded-xl text-xs sm:text-sm font-black italic tracking-tight ${!isTop3 && 'border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10'}`}
+                            className={`w-full h-11 sm:h-12 rounded-xl text-xs sm:text-sm font-black italic tracking-tight transition-all duration-500 ${
+                                isTop3 
+                                    ? 'shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]' 
+                                    : 'border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10'
+                            } ${isSpecial ? 'animate-pulse' : ''}`}
                         >
                             JOIN BATTLE <ChevronRight className="ml-1 w-4 h-4" />
                         </Button>

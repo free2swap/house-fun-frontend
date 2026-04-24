@@ -203,21 +203,24 @@ export default function Home() {
 
       {/* Live Bets Framer Ticker */}
       <div className="w-full bg-emerald-950/40 border-b border-emerald-900/50 py-2 overflow-hidden flex items-center justify-center backdrop-blur-md relative z-20 h-10">
-        <div className="flex items-center justify-center text-emerald-400 font-mono text-xs sm:text-sm tracking-wide w-full h-full">
-          <AnimatePresence mode="popLayout">
-            <motion.div
-              key={tickerIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: "anticipate" }}
-              className="flex items-center space-x-2 absolute whitespace-nowrap px-4"
-            >
-              <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
-              <span className="truncate max-w-[85vw]">{LIVE_BETS[tickerIndex]}</span>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        <Link href="/lobby" className="w-full h-full flex items-center justify-center">
+          <div className="flex items-center justify-center text-emerald-400 font-mono text-xs sm:text-sm tracking-wide w-full h-full hover:text-emerald-300 transition-colors cursor-pointer group">
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={tickerIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: "anticipate" }}
+                className="flex items-center space-x-2 absolute whitespace-nowrap px-4"
+              >
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="truncate max-w-[85vw] group-hover:underline decoration-emerald-500/50">{LIVE_BETS[tickerIndex]}</span>
+                <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </Link>
       </div>
 
       <motion.div

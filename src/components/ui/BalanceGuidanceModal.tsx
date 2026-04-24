@@ -54,7 +54,7 @@ export const BalanceGuidanceModal: React.FC<BalanceGuidanceModalProps> = ({
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                        className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] max-h-[85vh] flex flex-col"
                     >
                         {/* Header */}
                         <div className="p-6 border-b border-zinc-900 flex justify-between items-center bg-zinc-900/20">
@@ -69,7 +69,7 @@ export const BalanceGuidanceModal: React.FC<BalanceGuidanceModalProps> = ({
                             </button>
                         </div>
 
-                        <div className="p-8">
+                        <div className="p-6 sm:p-8 overflow-y-auto custom-scrollbar flex-1">
                             {/* Balance Info */}
                             <div className="bg-zinc-900/50 rounded-2xl p-5 border border-zinc-800 mb-8">
                                 <div className="flex justify-between items-center mb-1">
@@ -160,6 +160,22 @@ export const BalanceGuidanceModal: React.FC<BalanceGuidanceModalProps> = ({
                         <div className="absolute bottom-0 right-0 p-4 opacity-5 pointer-events-none">
                             <Wallet className="w-32 h-32 text-white -rotate-12 translate-x-12 translate-y-12" />
                         </div>
+
+                        <style jsx>{`
+                            .custom-scrollbar::-webkit-scrollbar {
+                                width: 4px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-track {
+                                background: transparent;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb {
+                                background: rgba(16, 185, 129, 0.1);
+                                border-radius: 10px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                                background: rgba(16, 185, 129, 0.3);
+                            }
+                        `}</style>
                     </motion.div>
                 </div>
             )}

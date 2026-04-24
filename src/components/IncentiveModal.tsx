@@ -91,7 +91,7 @@ export function IncentiveModal() {
                             <div className="space-y-3">
                                 {/* Be the House - Priority 1 */}
                                 <Link href="/banker" onClick={handleClose} className="block group">
-                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-indigo-500/60 transition-all overflow-hidden">
+                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-indigo-500/60 transition-all">
                                         <div className="absolute -top-1 -right-1">
                                             <div className="bg-indigo-500 text-white text-[8px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-tighter animate-bounce">
                                                 Hot Feature
@@ -114,7 +114,7 @@ export function IncentiveModal() {
 
                                 {/* Real Yield */}
                                 <Link href="/earn" onClick={handleClose} className="block group">
-                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-amber-500/60 transition-all overflow-hidden">
+                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-amber-500/60 transition-all">
                                         <div className="absolute -top-1 -right-1">
                                             <div className="bg-amber-500 text-black text-[8px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-tighter">
                                                 70% APR est.
@@ -137,7 +137,7 @@ export function IncentiveModal() {
 
                                 {/* Airdrop */}
                                 <Link href="/airdrop" onClick={handleClose} className="block group">
-                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-emerald-500/60 transition-all overflow-hidden">
+                                    <div className="relative p-5 bg-zinc-900/40 border border-zinc-800 rounded-2xl hover:border-emerald-500/60 transition-all">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center space-x-4">
                                                 <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30 group-hover:scale-110 transition-transform">

@@ -30,7 +30,6 @@ export const publicClientConfig = {
 };
 
 export const privyConfig: PrivyClientConfig = {
-    loginMethods: ['telegram', 'wallet', 'email', 'google'],
     embeddedWallets: {
         ethereum: {
             createOnLogin: 'users-without-wallets',
