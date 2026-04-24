@@ -603,8 +603,8 @@ export default function PlayRoom() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-zinc-950/80 p-4 rounded-2xl border border-zinc-800 focus-within:border-emerald-500/50 transition-all">
                                     <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Wager Amount</label>
-                                    <div className="flex items-center">
-                                        <div className="flex flex-col flex-1">
+                                    <div className="flex flex-col">
+                                        <div className="flex items-center justify-between">
                                             <input
                                                 type="number"
                                                 min={minBetNumber.toFixed(4)}
@@ -613,11 +613,13 @@ export default function PlayRoom() {
                                                 value={betAmountStr}
                                                 onChange={(e) => setBetAmountStr(e.target.value)}
                                                 placeholder="0.00"
-                                                className="w-full bg-transparent text-2xl font-black text-white outline-none placeholder:text-zinc-800"
+                                                className="w-full bg-transparent text-2xl font-black text-white outline-none placeholder:text-zinc-800 min-w-0 no-spinner"
                                             />
-                                            <span className="text-[10px] text-emerald-500/50 font-black tracking-widest uppercase">≈ ${(Number(betAmountStr) * bnbPrice).toFixed(2)} USD</span>
+                                            <span className="text-zinc-600 font-bold text-[10px] ml-1 shrink-0">{nativeSymbol}</span>
                                         </div>
-                                        <span className="text-zinc-600 font-bold text-xs ml-2">{nativeSymbol}</span>
+                                        <div className="text-[10px] text-emerald-500/50 font-black tracking-widest uppercase mt-1 truncate">
+                                            ≈ ${(Number(betAmountStr) * bnbPrice).toFixed(2)} USD
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/20 flex flex-col justify-center">
@@ -757,6 +759,16 @@ export default function PlayRoom() {
                 symbol={nativeSymbol}
                 bnbPrice={bnbPrice}
             />
+            <style jsx>{`
+                .no-spinner::-webkit-outer-spin-button,
+                .no-spinner::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                .no-spinner {
+                    -moz-appearance: textfield;
+                }
+            `}</style>
         </div>
     );
 }
