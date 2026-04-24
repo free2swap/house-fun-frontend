@@ -74,21 +74,21 @@ export default function BankerPage() {
             name: 'Cyberpunk Neon',
             image: '/poster.png',
             desc: 'When you share on X (Twitter), this Cyberpunk Casino poster will automatically appear.',
-            text: `I just opened my own Provably Fair Web3 Casino! 🎰\n\nPlay against my house liquidity with zero counterparty risk on DopaHouse:\n\n`
+            text: `I just opened my own Provably Fair Web3 Casino! 🎰\n\nPlay against my house liquidity with zero counterparty risk on DopaHouse:`
         },
         {
             id: 'vip',
             name: 'High Roller VIP',
             image: '/poster-vip.png',
             desc: 'A luxurious, high-end VIP aesthetic for targeting whales and big players.',
-            text: `The House always wins. But today, I AM THE HOUSE. 🏛️🎲\n\nI've deployed my bankroll on DopaHouse. Come try your luck at my high-stakes tables:\n\n`
+            text: `The House always wins. But today, I AM THE HOUSE. 🏛️🎲\n\nI've deployed my bankroll on DopaHouse. Come try your luck at my high-stakes tables:`
         },
         {
             id: 'degen',
             name: 'Web3 Degen',
             image: '/poster-degen.png',
             desc: 'A wild, meme-heavy style perfect for Crypto Twitter and degen communities.',
-            text: `Ape into my decentralized casino! 🐒🔥\n\nNo KYC, fully on-chain, instant payouts. Let's see who has the best alpha:\n\n`
+            text: `Ape into my decentralized casino! 🐒🔥\n\nNo KYC, fully on-chain, instant payouts. Let's see who has the best alpha:`
         }
     ];
 
@@ -1189,7 +1189,7 @@ export default function BankerPage() {
 
                                     <div className="flex gap-2">
                                         <a
-                                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(PROMOS[selectedPromo].text)}${encodeURIComponent(`${origin}/play/${currentHouse}?ref=${address}`)}`}
+                                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(PROMOS[selectedPromo].text)}&url=${encodeURIComponent(`${origin}/play/${currentHouse}?ref=${address}`)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="flex-1"
