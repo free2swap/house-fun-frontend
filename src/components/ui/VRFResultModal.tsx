@@ -44,6 +44,19 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
     ];
 
     const currentStepIndex = steps.findIndex(s => s.id === status);
+    const [seconds, setSeconds] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isOpen && status !== 'resolved') {
+            interval = setInterval(() => {
+                setSeconds(s => s + 1);
+            }, 1000);
+        } else {
+            setSeconds(0);
+        }
+        return () => clearInterval(interval);
+    }, [isOpen, status]);
 
     return (
         <AnimatePresence>
@@ -55,7 +68,7 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 bg-black/20"
-                        onClick={status === 'resolved' ? onClose : undefined}
+                        onClick={(status === 'resolved' || seconds > 15) ? onClose : undefined}
                     />
 
                     {/* Modal Content - Smaller and slightly shifted to not block center fully if possible */}
@@ -63,7 +76,7 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="relative w-full max-w-sm bg-zinc-950/90 border border-zinc-800 rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] backdrop-blur-md"
+                        className="relative w-full max-w-sm bg-zinc-950/90 border border-zinc-800 rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] backdrop-blur-md flex flex-col max-h-[85vh]"
                     >
                         {/* Status Header */}
                         <div className="relative z-10 p-5 border-b border-zinc-900 bg-zinc-900/30 flex justify-between items-center">
@@ -76,7 +89,7 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                                     <p className="text-[9px] text-zinc-500 mt-0.5 uppercase tracking-widest font-black">Secure Randomness</p>
                                 </div>
                             </div>
-                            {status === 'resolved' && (
+                            {(status === 'resolved' || seconds > 15) && (
                                 <button 
                                     onClick={onClose}
                                     className="p-1.5 hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 hover:text-white relative z-20"
@@ -86,7 +99,7 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                             )}
                         </div>
 
-                        <div className="relative z-10 p-6">
+                        <div className="relative z-10 p-6 overflow-y-auto custom-scrollbar flex-1">
                             {status !== 'resolved' ? (
                                 <div className="flex flex-col items-center py-4">
                                     {/* Animated Loader */}
@@ -116,7 +129,7 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                                     </p>
 
                                     {/* Steps Progress */}
-                                    <div className="w-full space-y-3">
+                                    <div className="w-full space-y-3 mb-6">
                                         {steps.map((step, idx) => (
                                             <div key={step.id} className="flex items-center space-x-3">
                                                 <div className={`w-5 h-5 rounded-full flex items-center justify-center border ${
@@ -136,6 +149,30 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                                             </div>
                                         ))}
                                     </div>
+
+                                    {seconds > 15 && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="w-full space-y-4"
+                                        >
+                                            <div className="p-3 bg-amber-500/5 border border-amber-500/20 rounded-2xl text-center">
+                                                <p className="text-[10px] text-amber-500 font-bold uppercase tracking-tight leading-relaxed">
+                                                    Taking longer than usual. The Oracle might be congested or low on funds.
+                                                </p>
+                                                <p className="text-[9px] text-zinc-500 mt-1 uppercase font-black">
+                                                    Your funds are safe. Results will appear in history.
+                                                </p>
+                                            </div>
+                                            <Button 
+                                                variant="outline" 
+                                                className="w-full border-zinc-800 hover:bg-zinc-900 text-xs font-bold py-4 h-auto"
+                                                onClick={onClose}
+                                            >
+                                                CLOSE AND WAIT
+                                            </Button>
+                                        </motion.div>
+                                    )}
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center">
@@ -259,6 +296,22 @@ export const VRFResultModal: React.FC<VRFResultModalProps> = ({
                             <Zap className="w-32 h-32 text-emerald-500 translate-x-12 -translate-y-12 rotate-12" />
                         </div>
                     </motion.div>
+            <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(16, 185, 129, 0.1);
+                    border-radius: 10px;
+                }
+                .custom-scrollbar {
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(16, 185, 129, 0.1) transparent;
+                }
+            `}</style>
                 </div>
             )}
         </AnimatePresence>
