@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract, useBalance, usePublicClient } from 'wagmi';
-import { parseEther, parseAbiItem } from 'viem';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract, useBalance, usePublicClient, useGasPrice } from 'wagmi';
+import { parseEther, parseAbiItem, formatUnits } from 'viem';
 import { ADDRESSES, ABIS, getAddresses } from '@/abis/contracts';
 
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Coins, CircleDollarSign, History, Share2, HelpCircle, ShieldCheck, Zap, Dices } from 'lucide-react';
+import { Coins, CircleDollarSign, History, Share2, HelpCircle, ShieldCheck, Zap, Dices, Loader2 } from 'lucide-react';
 import { getFriendlyError } from '@/utils/error';
 import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
@@ -67,6 +67,7 @@ export default function PlayRoom() {
     const [vrfStatus, setVrfStatus] = useState<VRFStatus>('signing');
     const [lastTxHash, setLastTxHash] = useState<string>('');
     const [lastPayout, setLastPayout] = useState<string>('0');
+    const [isAnimationOverridden, setIsAnimationOverridden] = useState(false);
 
     const [origin, setOrigin] = useState('');
     useEffect(() => {
@@ -133,6 +134,15 @@ export default function PlayRoom() {
         query: { enabled: !!address }
     });
 
+    const { data: maxGasPrice } = useReadContract({
+        address: addresses.BetRouter as `0x${string}`,
+        abi: ABIS.BetRouter,
+        functionName: 'maxGasPrice',
+    });
+
+    const { data: currentGasPrice } = useGasPrice();
+    const isGasTooHigh = !!currentGasPrice && !!maxGasPrice && currentGasPrice > (maxGasPrice as bigint);
+
     const vipTier1Min = parseEther('10000'); // 10k DOPA
     const vipTier2Min = parseEther('100000'); // 100k DOPA
     const currentStake = bankerStake ? BigInt(bankerStake.toString()) : 0n;
@@ -183,7 +193,7 @@ export default function PlayRoom() {
     const { writeContract: writeBind, isPending: isBindPending, isError: isBindError, error: bindError } = useWriteContract();
     const { isLoading: isTxConfirming, isSuccess: isTxSuccess, data: txReceipt } = useWaitForTransactionReceipt({ hash: betTxHash });
 
-    const isFlipping = isBetPending || isTxConfirming || isWaitingForOracle;
+    const isFlipping = (isBetPending || isTxConfirming || isWaitingForOracle) && !isAnimationOverridden;
 
     useEffect(() => {
         if (isBetError) {
@@ -223,6 +233,7 @@ export default function PlayRoom() {
             return;
         }
 
+        setIsAnimationOverridden(false);
         setResult(null);
         setLastGuess(gameType === 'flip' ? guess : gameType === 'dice' ? dieGuess : rollTarget);
         setShowConfetti(false);
@@ -343,6 +354,7 @@ export default function PlayRoom() {
                         setResult(displayResult);
                         setWonLocal(won);
                         setIsWaitingForOracle(false);
+                        setIsAnimationOverridden(false);
                         setLastTxHash((log as any).transactionHash);
 
                         if (won) {
@@ -460,6 +472,15 @@ export default function PlayRoom() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Async Pending Indicator */}
+                        {isWaitingForOracle && isAnimationOverridden && (
+                            <div className="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-md animate-pulse">
+                                <Loader2 className="w-3 h-3 text-emerald-400 animate-spin" />
+                                <span className="text-[10px] font-black text-emerald-400 uppercase tracking-tighter">Bet Pending Resolution...</span>
+                            </div>
+                        )}
+
                         <span className="text-emerald-400 font-medium block">{gameType === 'flip' ? '1.92x' : gameType === 'dice' ? '5.7x' : (96 / rollTarget).toFixed(2) + 'x'} Payout</span>
                         <span className="text-[10px] text-zinc-600 font-bold tracking-widest uppercase">
                             Win Prob: {gameType === 'flip' ? '50%' : gameType === 'dice' ? '16.6%' : rollTarget + '%'}
@@ -600,6 +621,19 @@ export default function PlayRoom() {
 
                         {/* Bet Controls */}
                         <div className="w-full max-w-sm space-y-6">
+                            {/* Gas Price Warning */}
+                            {isGasTooHigh && (
+                                <div className="bg-amber-500/10 border border-amber-500/30 p-3 rounded-xl flex items-center justify-between group">
+                                    <div className="flex items-center space-x-2">
+                                        <Zap className="w-4 h-4 text-amber-500 animate-pulse" />
+                                        <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Network Congested</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold text-zinc-500 uppercase">
+                                        Gas: {Number(formatUnits(currentGasPrice as bigint, 9)).toFixed(1)} Gwei
+                                    </span>
+                                </div>
+                            )}
+                            
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-zinc-950/80 p-4 rounded-2xl border border-zinc-800 focus-within:border-emerald-500/50 transition-all">
                                     <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Wager Amount</label>
@@ -638,7 +672,7 @@ export default function PlayRoom() {
                                     variant="outline"
                                     className="flex-1 font-mono text-xs border-zinc-800 hover:bg-zinc-800"
                                     onClick={() => setBetAmountStr(minBetNumber.toFixed(4))}
-                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0}
+                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0 || isGasTooHigh}
                                 >
                                     Min
                                 </Button>
@@ -646,7 +680,7 @@ export default function PlayRoom() {
                                     variant="outline"
                                     className="flex-1 font-mono text-xs border-zinc-800 hover:bg-zinc-800"
                                     onClick={() => setBetAmountStr((maxBetNumber / 2).toFixed(4))}
-                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0}
+                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0 || isGasTooHigh}
                                 >
                                     Half
                                 </Button>
@@ -659,7 +693,7 @@ export default function PlayRoom() {
                                         const finalMax = Math.min(safeMax, maxBetNumber);
                                         setBetAmountStr(finalMax.toFixed(4));
                                     }}
-                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0}
+                                    disabled={isFlipping || !isConnected || maxBetNumber <= 0 || isGasTooHigh}
                                 >
                                     Max
                                 </Button>
@@ -681,14 +715,14 @@ export default function PlayRoom() {
                                     <Button
                                         className="flex-1 h-14 text-sm md:text-lg border-2 border-yellow-500 bg-yellow-500/10 hover:bg-yellow-500/20 shadow-[0_0_20px_rgba(234,179,8,0.1)] group"
                                         onClick={() => handleBet('heads')}
-                                        disabled={isFlipping || !isConnected}
+                                        disabled={isFlipping || !isConnected || isGasTooHigh}
                                     >
                                         <span className="font-black text-yellow-500 group-hover:text-yellow-400 transition-colors uppercase">HEADS</span>
                                     </Button>
                                     <Button
                                         className="flex-1 h-14 text-sm md:text-lg border-2 border-zinc-400 bg-zinc-400/10 hover:bg-zinc-400/20 shadow-[0_0_20px_rgba(161,161,170,0.1)] group"
                                         onClick={() => handleBet('tails')}
-                                        disabled={isFlipping || !isConnected}
+                                        disabled={isFlipping || !isConnected || isGasTooHigh}
                                     >
                                         <span className="font-black text-zinc-400 group-hover:text-zinc-300 transition-colors uppercase">TAILS</span>
                                     </Button>
@@ -697,7 +731,7 @@ export default function PlayRoom() {
                                 <Button
                                     className="w-full h-14 text-lg border-2 border-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)] group"
                                     onClick={() => handleBet()}
-                                    disabled={isFlipping || !isConnected}
+                                    disabled={isFlipping || !isConnected || isGasTooHigh}
                                 >
                                     <span className="font-black text-emerald-400 group-hover:text-emerald-300 transition-colors uppercase tracking-widest">ROLL DICE ({dieGuess})</span>
                                 </Button>
@@ -705,7 +739,7 @@ export default function PlayRoom() {
                                 <Button
                                     className="w-full h-14 text-lg border-2 border-purple-500 bg-purple-500/10 hover:bg-purple-500/20 shadow-[0_0_20px_rgba(168,85,247,0.1)] group"
                                     onClick={() => handleBet()}
-                                    disabled={isFlipping || !isConnected}
+                                    disabled={isFlipping || !isConnected || isGasTooHigh}
                                 >
                                     <span className="font-black text-purple-400 group-hover:text-purple-300 transition-colors uppercase tracking-widest">LUCKY ROLL (UNDER {rollTarget})</span>
                                 </Button>
@@ -749,7 +783,22 @@ export default function PlayRoom() {
 
             <VRFResultModal 
                 isOpen={isVrfModalOpen}
-                onClose={() => setIsVrfModalOpen(false)}
+                onClose={() => {
+                    setIsVrfModalOpen(false);
+                    if (isWaitingForOracle) {
+                        setIsAnimationOverridden(true);
+                        toast('Animation stopped. Bet is still pending on-chain.', {
+                            icon: '⏳',
+                            style: {
+                                borderRadius: '10px',
+                                background: '#333',
+                                color: '#fff',
+                                fontSize: '12px',
+                                fontWeight: 'bold'
+                            }
+                        });
+                    }
+                }}
                 status={vrfStatus}
                 result={result}
                 won={won_local}
